@@ -24,7 +24,7 @@ class LoginController extends Controller
             'password'=> $request->password
         ];
 
-        $response = Http::timeout(30)->post('https://0e71-2804-a58-8046-2740-942a-4cec-3124-132b.ngrok-free.app/api/v1/auth/token/', $data);
+        $response = Http::timeout(30)->post('http://localhost:8000/api/v1/auth/token/', $data);
         
         if (($response->status() != 200) && ($response->status() != 201))
         {

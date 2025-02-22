@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SalesController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\RegisterController;
@@ -12,3 +13,6 @@ Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/store', [RegisterController::class, 'store'])->name('register.store');
 
 Route::get('/products', [ProductsController::class, 'index'])->name('products');
+
+Route::get('/sales/create/{productId}', [SalesController::class, 'create'])->name('sales.create');
+Route::post('/sales/store', [SalesController::class, 'store'])->name('sales.store');

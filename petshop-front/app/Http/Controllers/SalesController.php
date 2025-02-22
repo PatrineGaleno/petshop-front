@@ -7,20 +7,51 @@ use Illuminate\Support\Facades\Http;
 
 class SalesController extends Controller
 {
-    public function index(Request $request, int $productId)
+    public function create(Request $request, int $productId)
     {
-        if (!$request->session()->has('auth'))
+        $auth = $request->session()->get('auth');
+        $token = $auth['token'] ?? null;
+        if (!$token)
         {
             return redirect()->route('login');
         }
 
+        $response = Http::withToken($token)->get("http://localhost:8000/api/v1/products/$productId/");
+
+        if (($response->status() != 200) && ($response->status() != 201))
+        {
+            return redirect()->route('products');
+        }
+
+        $product = $response->json();
+
+        return view('create-sale', compact('product'));
+    }
+
+    public function store(Request $request)
+    {
         $auth = $request->session()->get('auth');
-        $token = $auth['token'];
+        $token = $auth['token'] ?? null;
+        if (!$token)
+        {
+            return redirect()->route('login');
+        }
 
-        $response = Http::withToken($token)->get('https://0e71-2804-a58-8046-2740-942a-4cec-3124-132b.ngrok-free.app/api/v1/products/$productId');
+        $data = [
+            'product_id' => $request->productId,
+            'bought_quantity' => $request->boughtQuantity,
+            'payment_form' => $request->paymentForm,
+        ];
 
-        $products = $response->successful() ? $response->json() : $response;
+        
+        $response = Http::withToken($token)->post('http://localhost:8000/api/v1/sales/', $data);
+        
+        if (($response->status() != 200) && ($response->status() != 201))
+        {
+            $error = $response->json()['detail'] ?? $response->json()['message'] ?? 'Erro desconhecido';
+            return redirect()->back()->withErrors(['message' => $error]);
+        }
 
-        return view('sales', compact('products'));
+        return redirect()->route('products');
     }
 }

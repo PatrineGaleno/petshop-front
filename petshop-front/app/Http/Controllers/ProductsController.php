@@ -16,9 +16,9 @@ class ProductsController extends Controller
             return redirect()->route('login');
         }
 
-        $response = Http::withToken($token)->timeout(30)->get('https://0e71-2804-a58-8046-2740-942a-4cec-3124-132b.ngrok-free.app/api/v1/products/');
+        $response = Http::withToken($token)->timeout(30)->get('http://localhost:8000/api/v1/products/');
 
-        $products = $response->successful() ? $response->json() : $response;
+        $products = $response->successful() ? $response->json() : [];
 
         return view('products', compact('products'));
     }
