@@ -10,6 +10,7 @@ use App\Http\Controllers\ProductsController;
 
 Route::get('/', [LoginController::class, 'index'])->name('login');
 Route::post('/login/store', [LoginController::class, 'store'])->name('login.store');
+Route::get('/login/destroy', [LoginController::class, 'destroy'])->name('login.destroy');
 
 Route::get('/register', [RegisterController::class, 'index'])->name('register');
 Route::post('/register/store', [RegisterController::class, 'store'])->name('register.store');

@@ -26,7 +26,7 @@
                         <a class="nav-link" href="{{ route('pets') }}">Pets</a>
                     </li>
                 </ul>
-                <a class="btn btn-outline-danger" href="">Logout</a>
+                <a class="btn btn-outline-danger" href="{{ route("login.destroy") }}">Logout</a>
             </div>
         </div>
     </nav>
