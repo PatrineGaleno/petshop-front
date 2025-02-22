@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Products</title>
+    <title>Pets</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 
@@ -31,22 +31,30 @@
         </div>
     </nav>
 
+    @if(session()->has('message'))
+        <div class="alert alert-success">
+            {{ session()->get('message') }}
+        </div>
+    @endif
+
     <p align="center" class="my-3">
-        <a href="{{ route('sales.history') }}">Histórico de Compras</a>
+        <a href="{{ route('adoptions.history') }}">Histórico de Adoções</a>
     </p>
 
     <div class="container">
-        @forelse ($products as $product)
+        @forelse ($pets as $pet)
             <div class="card">
                 <div class="card-body">
-                    <div>{{ $product['name'] }}</div>
-                    <div>R$ {{ $product['price'] }}</div>
-                    <div>{{ $product['current_quantity'] }} itens restantes</div>
-                    <a href="{{ route('sales.create', ['productId' => $product['id']]) }}">Comprar produto</a>
+                    <div>{{ $pet['name'] }}</div>
+                    <div>{{ $pet['species_name'] }}</div>
+                    <div>{{ $pet['race'] }}</div>
+                    <div>{{ $pet['description'] }}</div>
+                    <div>{{ $pet['weight'] }} Kg</div>
+                    <a href="{{ route('adoptions.create', ['petId' => $pet['id']]) }}">Adotar pet</a>
                 </div>
             </div>
         @empty
-            <div>Não há produtos cadastrados</div>
+            <div>Não há pets disponíveis</div>
         @endforelse
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>

@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 
-class SalesController extends Controller
+class AdoptionsController extends Controller
 {
-    public function create(Request $request, int $productId)
+    public function create(Request $request, int $petId)
     {
         $auth = $request->session()->get('auth');
         $token = $auth['token'] ?? null;
@@ -16,16 +16,16 @@ class SalesController extends Controller
             return redirect()->route('login');
         }
 
-        $response = Http::withToken($token)->get("http://localhost:8000/api/v1/products/$productId/");
+        $response = Http::withToken($token)->get("http://localhost:8000/api/v1/pets/$petId/");
 
         if (($response->status() != 200) && ($response->status() != 201))
         {
-            return redirect()->route('products');
+            return redirect()->route('pets');
         }
 
-        $product = $response->json();
+        $pet = $response->json();
 
-        return view('create-sale', compact('product'));
+        return view('create-adoption', compact('pet'));
     }
 
     public function store(Request $request)
@@ -38,13 +38,11 @@ class SalesController extends Controller
         }
 
         $data = [
-            'product_id' => $request->productId,
-            'bought_quantity' => $request->boughtQuantity,
-            'payment_form' => $request->paymentForm,
+            'pet_id' => $request->petId,
         ];
 
         
-        $response = Http::withToken($token)->post('http://localhost:8000/api/v1/sales/', $data);
+        $response = Http::withToken($token)->post('http://localhost:8000/api/v1/adoptions/', $data);
         
         if (($response->status() != 200) && ($response->status() != 201))
         {
@@ -52,7 +50,7 @@ class SalesController extends Controller
             return redirect()->back()->withErrors(['message' => $error]);
         }
 
-        return redirect()->route('products');
+        return redirect()->route('pets')->with('message', 'A sua solicitação está sendo processada. Aguarde um administrador analisá-la.');
     }
 
     public function history(Request $request)
@@ -66,15 +64,15 @@ class SalesController extends Controller
 
         $userId = $auth['user']['id'];
 
-        $response = Http::withToken($token)->get("http://localhost:8000/api/v1/sales/?customer_id=$userId");
+        $response = Http::withToken($token)->get("http://localhost:8000/api/v1/adoptions/?customer_id=$userId");
 
         if (($response->status() != 200) && ($response->status() != 201))
         {
-            return redirect()->route('products');
+            return redirect()->route('pets');
         }
 
-        $sales = $response->json();
+        $adoptions = $response->json();
 
-        return view('sales-history', compact('sales'));
+        return view('adoptions-history', compact('adoptions'));
     }
 }
