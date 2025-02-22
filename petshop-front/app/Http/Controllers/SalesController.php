@@ -54,4 +54,25 @@ class SalesController extends Controller
 
         return redirect()->route('products');
     }
+
+    public function history(Request $request)
+    {
+        $auth = $request->session()->get('auth');
+        $token = $auth['token'] ?? null;
+        if (!$token)
+        {
+            return redirect()->route('login');
+        }
+
+        $response = Http::withToken($token)->get("http://localhost:8000/api/v1/sales/");
+
+        if (($response->status() != 200) && ($response->status() != 201))
+        {
+            return redirect()->route('products');
+        }
+
+        $sales = $response->json();
+
+        return view('sales-history', compact('sales'));
+    }
 }

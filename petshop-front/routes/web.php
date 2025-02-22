@@ -16,3 +16,4 @@ Route::get('/products', [ProductsController::class, 'index'])->name('products');
 
 Route::get('/sales/create/{productId}', [SalesController::class, 'create'])->name('sales.create');
 Route::post('/sales/store', [SalesController::class, 'store'])->name('sales.store');
+Route::get('/sales/history', [SalesController::class, 'history'])->name('sales.history');
