@@ -25,7 +25,7 @@ class RegisterController extends Controller
         ];
 
         
-        $response = Http::timeout(30)->post('http://localhost:8000/api/v1/users/', $data);
+        $response = Http::timeout(30)->post(config('app.api_url') . '/api/v1/users/', $data);
         
         if (($response->status() != 200) && ($response->status() != 201))
         {

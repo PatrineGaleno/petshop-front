@@ -16,7 +16,7 @@ class AdoptionsController extends Controller
             return redirect()->route('login');
         }
 
-        $response = Http::withToken($token)->get("http://localhost:8000/api/v1/pets/$petId/");
+        $response = Http::withToken($token)->get(config('app.api_url') . "/api/v1/pets/$petId/");
 
         if (($response->status() != 200) && ($response->status() != 201))
         {
@@ -42,7 +42,7 @@ class AdoptionsController extends Controller
         ];
 
         
-        $response = Http::withToken($token)->post('http://localhost:8000/api/v1/adoptions/', $data);
+        $response = Http::withToken($token)->post(config('app.api_url') . '/api/v1/adoptions/', $data);
         
         if (($response->status() != 200) && ($response->status() != 201))
         {
@@ -64,7 +64,7 @@ class AdoptionsController extends Controller
 
         $userId = $auth['user']['id'];
 
-        $response = Http::withToken($token)->get("http://localhost:8000/api/v1/adoptions/?customer_id=$userId");
+        $response = Http::withToken($token)->get(config('app.api_url') . "/api/v1/adoptions/?customer_id=$userId");
 
         if (($response->status() != 200) && ($response->status() != 201))
         {

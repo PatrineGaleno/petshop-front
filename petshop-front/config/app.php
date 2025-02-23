@@ -1,7 +1,9 @@
 <?php
 
 return [
-
+    'api_url' => env('APP_ENV') === 'production' 
+        ? 'https://petshop-api-n9x2.onrender.com' 
+        : 'http://127.0.0.1:8000',
     /*
     |--------------------------------------------------------------------------
     | Application Name

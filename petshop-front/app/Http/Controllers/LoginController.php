@@ -23,7 +23,7 @@ class LoginController extends Controller
             'password' => $request->password
         ];
 
-        $response = Http::timeout(30)->post('http://localhost:8000/api/v1/auth/token/', $data);
+        $response = Http::timeout(30)->post(config('app.api_url') . '/api/v1/auth/token/', $data);
 
         if (($response->status() != 200) && ($response->status() != 201)) {
             $error = $response->json()['detail'] ?? $response->json()['message'] ?? 'Erro desconhecido';

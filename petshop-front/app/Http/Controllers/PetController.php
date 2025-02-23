@@ -16,7 +16,7 @@ class PetController extends Controller
             return redirect()->route('login');
         }
 
-        $response = Http::withToken($token)->timeout(30)->get('http://localhost:8000/api/v1/pets/?status=A');
+        $response = Http::withToken($token)->timeout(30)->get(config('app.api_url') . '/api/v1/pets/?status=A');
 
         $pets = $response->successful() ? $response->json() : [];
 
